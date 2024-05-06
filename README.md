@@ -24,6 +24,17 @@
  4，对于表达式 s -> a b c 其中 s 是一个非终结符，a 是一个非终结符，并且 a 可以推导出 EPSILON，b 可以是一个终结符或者非终结符，那么 First(a) 并上 First(b)是 First(a)的子集。
  例如表达式 statement -> expression SEMICOLON，statement 对应 s, expression 对应a, SEMICOLON 对应 c,于是 First(expression)并上 First(SEMICOLON) 是 First(statement)的子集。 因为 First(expression)={LEFT_PARENT, NUMBER,
  IDENTIFIER, EPSILON}, First(SEMICOLON)={SEMICOLON}, 同时 expression->EPSILON，也就是 expression 能推导到EPSILON，所以两个集合并起来也就是{LEFT_PARENT, NUMBER, IDENTIFIER, EPSILON， SEMICOLON}是 First(statement)的一个
- 子集
+ 子集。需要注意的是，如果a对应三个非终结符的集合x,y,z，并且他们都能推导到 EPSILON, 那么 First(s)就会包含 First(x), First(y), First(z)。 
+
+ 我们看个具体例子：
+ stmt -> expr SEMICOLON
+ expr -> term expr_prime | EPSILON
+ expr_prime -> PLUS term expr_prime | EPSILON
+ term -> factor term_prime
+ term_prime -> STAR factor term_prime | EPSILON
+ factor -> LEFT_PAREN expr RIGHT_PAREN | NUMBER
+
+ 首先有 First(factor)={LEFT_PAREN, NUMBER}, 由于 factor 出现在 term->factor term_prime, 因此 First(factor)是 First(term)的子集， 同理 First(term)也是 First(expr)的子集，同理 First(expr)是 First(stmt)的子集
+ 
  
  
