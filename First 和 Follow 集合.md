@@ -27,11 +27,17 @@
  子集。需要注意的是，如果a对应三个非终结符的集合x,y,z，并且他们都能推导到 EPSILON, 那么 First(s)就会包含 First(x), First(y), First(z)。 
 
  我们看个具体例子：
+ 
  stmt -> expr SEMICOLON
+ 
  expr -> term expr_prime | EPSILON
+ 
  expr_prime -> PLUS term expr_prime | EPSILON
+ 
  term -> factor term_prime
+ 
  term_prime -> STAR factor term_prime | EPSILON
+ 
  factor -> LEFT_PAREN expr RIGHT_PAREN | NUMBER
 
  首先有 First(factor)={LEFT_PAREN, NUMBER}, 由于 factor 出现在 term->factor term_prime, 因此 First(factor)是 First(term)的子集， 同理 First(term)也是 First(expr)的子集，同理 First(expr)是 First(stmt)的子集。
@@ -44,7 +50,9 @@
 除了 First 集合，我们还需要了解另一种集合叫 Follow 集合。 所谓 Follow 集合就是给定某个非终结符，我们把所以在推导表达式中能直接跟着该符号的终结符找出来形成一个集合。我们看具体例子：
 
  1，compound_stmt -> LEFT_BRACKET stmt_list RIGHT_BRACKET,
+ 
  2，stmt_list -> stmt_list stmt
+ 
  3，stmt -> expr sEMICOLON
 
 从第一个表达式看到 RIGHT_BRACKET 跟在 stmt_list 后面，因此它属于集合 Follow(stmt_list)。 下面我们看一个推导过程：
